@@ -1,0 +1,39 @@
+# Version control
+.git
+.gitignore
+
+# Environment files and credentials (CRITICAL: Do not bundle secrets into images)
+.env*
+!.env.example
+backend/.env*
+!backend/.env.example
+
+# Node.js dependencies and output
+node_modules/
+dist/
+coverage/
+
+# Python cache & virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+backend_venv/
+venv/
+.venv/
+
+# SQLite databases & temp data
+*.db
+*.sqlite
+*.sqlite3
+backend/unisiraj_cia.db
+
+# Logs and system files
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.antigravity/
+.agents/

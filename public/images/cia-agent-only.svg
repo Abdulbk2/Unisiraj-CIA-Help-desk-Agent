@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 330" width="620" height="330">
+  <!-- Solid White Canvas -->
+  <rect width="620" height="330" fill="#FFFFFF"/>
+
+  <!-- CIA Helpdesk Agent Brand -->
+  <g id="cia-helpdesk-brand" transform="translate(10, -115)">
+    <!-- AGENT CIRCULAR EMBLEM -->
+    <g transform="translate(125, 260)">
+      <!-- Outer Navy Arch -->
+      <circle cx="0" cy="-8" r="95" fill="none" stroke="#0B2545" stroke-width="11" stroke-linecap="round"/>
+
+      <!-- Headset Arch Band -->
+      <path d="M-68 -10 C-68 -60, 68 -60, 68 -10" fill="none" stroke="#0B2545" stroke-width="9" stroke-linecap="round"/>
+      <!-- Headset Ear-Pads -->
+      <rect x="-78" y="-22" width="16" height="36" rx="8" fill="#0B2545"/>
+      <rect x="62" y="-22" width="16" height="36" rx="8" fill="#0B2545"/>
+
+      <!-- Microphone Arm & Mouthpiece -->
+      <path d="M68 0 C68 32, 38 42, 14 36" fill="none" stroke="#0B2545" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="10" cy="36" r="6.5" fill="#0B2545"/>
+
+      <!-- Mortarboard Cap -->
+      <polygon points="0,-72 70,-46 0,-20 -70,-46" fill="#0B2545" stroke="#FFFFFF" stroke-width="2.5"/>
+      <path d="M-44 -38 Q0 -20 44 -38 L44 -26 Q0 -8 -44 -26 Z" fill="#081A32"/>
+
+      <!-- Cap Golden Tassel -->
+      <path d="M44 -44 C54 -34, 58 -16, 56 -2" fill="none" stroke="#EAA824" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="56" cy="2" r="5" fill="#EAA824"/>
+      <line x1="53" y1="5" x2="59" y2="18" stroke="#EAA824" stroke-width="3.5" stroke-linecap="round"/>
+
+      <!-- Student Silhouette Head -->
+      <circle cx="0" cy="2" r="28" fill="#0B2545"/>
+
+      <!-- White V-Neck Shirt Collar -->
+      <polygon points="-10,30 0,42 10,30 5,28 0,35 -5,28" fill="#FFFFFF"/>
+
+      <!-- Torso / Suit V-Shape -->
+      <path d="M-36 34 Q0 50 36 34 L28 72 Q0 90 -28 72 Z" fill="#0B2545"/>
+
+      <!-- Sweeping Golden Wings -->
+      <path d="M-98 12 C-86 42, -50 78, -4 86 C-34 78, -70 58, -88 32 C-94 22, -98 12, -98 12 Z" fill="#EAA824"/>
+      <path d="M98 12 C86 42, 50 78, 4 86 C34 78, 70 58, 88 32 C94 22, 98 12, 98 12 Z" fill="#EAA824"/>
+
+      <!-- Lower Navy Support Cradle -->
+      <path d="M-82 38 C-68 68, -32 98, 0 108 C32 98, 68 68, 82 38 C64 68, 30 90, 0 92 C-30 90, -64 68, -82 38 Z" fill="#0B2545"/>
+    </g>
+
+    <!-- CIA HELPDESK AGENT TEXT -->
+    <g transform="translate(250, 240)">
+      <text y="0" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="56" fill="#0B2545" letter-spacing="-0.5">
+        CIA Helpdesk
+      </text>
+      <text y="66" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="56" fill="#EAA824" letter-spacing="-0.5">
+        Agent
+      </text>
+    </g>
+
+    <!-- SUBTITLE: VISA COMPLIANCE & RENEWAL SUPPORT -->
+    <text x="35" y="420" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="bold" font-size="18" letter-spacing="4" fill="#0B2545">
+      VISA COMPLIANCE &amp; RENEWAL SUPPORT
+    </text>
+  </g>
+</svg>

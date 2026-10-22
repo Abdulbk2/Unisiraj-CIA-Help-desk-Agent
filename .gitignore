@@ -1,0 +1,58 @@
+# ==============================================================================
+# UniSIRAJ CIA Helpdesk Agent - Git Ignore Rules
+# ==============================================================================
+
+# Node dependencies and build artifacts
+node_modules/
+dist/
+build/
+coverage/
+.turbo/
+.npm/
+
+# Environment files & secrets (NEVER commit live credentials or API keys)
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+backend_venv/
+venv/
+.venv/
+env/
+ENV/
+
+# Database files (local SQLite instances containing student records)
+*.db
+*.sqlite
+*.sqlite3
+backend/unisiraj_cia.db
+
+# Operating System & IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Antigravity & Agent workspace artifacts
+.antigravity/
+.agents/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
