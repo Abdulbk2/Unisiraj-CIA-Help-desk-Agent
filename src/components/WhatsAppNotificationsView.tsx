@@ -36,7 +36,7 @@ export const WhatsAppNotificationsView: React.FC<WhatsAppNotificationsViewProps>
 
   // Send message dialog state
   const [confirmDialogItem, setConfirmDialogItem] = useState<WhatsAppEligibleItem | null>(null);
-  const [dispatchMethod, setDispatchMethod] = useState<'twilio' | 'demo'>('twilio');
+  const [dispatchMethod, setDispatchMethod] = useState<'twilio' | 'demo'>('demo');
   const [isSending, setIsSending] = useState(false);
   const [sendSuccessResult, setSendSuccessResult] = useState<SendWhatsAppResponse | null>(null);
   const [sendErrorNotice, setSendErrorNotice] = useState<string | null>(null);
@@ -63,10 +63,16 @@ export const WhatsAppNotificationsView: React.FC<WhatsAppNotificationsViewProps>
 
   const getTierPreviewText = (item: WhatsAppEligibleItem) => {
     const student = item.student;
+    const formattedDate =
+      student.formattedExpiryDate ||
+      (student.visaExpiryDate
+        ? new Date(student.visaExpiryDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+        : 'N/A');
+
     if (item.tier === 'OVERDUE_ALERT') {
       return `[UniSIRAJ CIA EMERGENCY OVERSTAY NOTICE]
 Dear ${student.fullName} (${student.matricId}),
-Our automated compliance audit records show your Student Pass EXPIRED on ${student.formattedExpiryDate}.
+Our automated compliance audit records show your Student Pass EXPIRED on ${formattedDate}.
 Under Section 15(1)(c) of the Immigration Act, overstaying incurs compounding fines between RM1,100 to RM3,100 and risk of travel bans.
 Report IMMEDIATELY to CIA Helpdesk, Level 2, Administration Complex for urgent Special Pass rectification.`;
     }
@@ -74,7 +80,7 @@ Report IMMEDIATELY to CIA Helpdesk, Level 2, Administration Complex for urgent S
     if (item.tier === 'TIER_3_30_DAYS') {
       return `[UniSIRAJ CIA TIER 3 URGENT VISA REMINDER]
 Dear ${student.fullName} (${student.matricId}),
-Your Student Pass expires in ${item.daysRemaining} days (${student.formattedExpiryDate}).
+Your Student Pass expires in ${item.daysRemaining} days (${formattedDate}).
 Malaysian Immigration strictly requires passport submission prior to this threshold.
 Please submit your passport, medical screening clearance, and academic attendance slip to CIA Helpdesk today to avoid visa cancellation.`;
     }
@@ -82,13 +88,13 @@ Please submit your passport, medical screening clearance, and academic attendanc
     if (item.tier === 'TIER_2_60_DAYS') {
       return `[UniSIRAJ CIA TIER 2 RENEWAL FOLLOW-UP]
 Dear ${student.fullName} (${student.matricId}),
-You have ${item.daysRemaining} days remaining before your Student Pass expires on ${student.formattedExpiryDate}.
+You have ${item.daysRemaining} days remaining before your Student Pass expires on ${formattedDate}.
 Kindly verify your EMGS application status and ensure renewal processing fees have been paid at the university bursary.`;
     }
 
     return `[UniSIRAJ CIA TIER 1 RENEWAL ADVISORY]
 Dear ${student.fullName} (${student.matricId}),
-The 90-day renewal window for your Student Pass has officially opened (Expiry: ${student.formattedExpiryDate}).
+The 90-day renewal window for your Student Pass has officially opened (Expiry: ${formattedDate}).
 Please ensure your passport has at least 18 months remaining validity and obtain your latest faculty academic transcript.`;
   };
 
@@ -333,6 +339,7 @@ Please ensure your passport has at least 18 months remaining validity and obtain
                           type="button"
                           onClick={() => {
                             setConfirmDialogItem(item);
+                            setDispatchMethod('demo');
                             setSendSuccessResult(null);
                             setSendErrorNotice(null);
                           }}
@@ -496,6 +503,22 @@ Please ensure your passport has at least 18 months remaining validity and obtain
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         type="button"
+                        onClick={() => setDispatchMethod('demo')}
+                        className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
+                          dispatchMethod === 'demo'
+                            ? 'border-blue-600 bg-blue-50/70 ring-1 ring-blue-500 shadow-2xs'
+                            : 'border-gray-200 bg-white hover:bg-gray-50'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-gray-900 text-xs">Demo / Simulation</span>
+                          {dispatchMethod === 'demo' && <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />}
+                        </div>
+                        <p className="text-[10px] text-gray-500 mt-0.5">Instant delivery & audit logs (Default)</p>
+                      </button>
+
+                      <button
+                        type="button"
                         onClick={() => setDispatchMethod('twilio')}
                         className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                           dispatchMethod === 'twilio'
@@ -508,22 +531,6 @@ Please ensure your passport has at least 18 months remaining validity and obtain
                           {dispatchMethod === 'twilio' && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />}
                         </div>
                         <p className="text-[10px] text-gray-500 mt-0.5">Real Twilio WhatsApp API</p>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setDispatchMethod('demo')}
-                        className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
-                          dispatchMethod === 'demo'
-                            ? 'border-blue-600 bg-blue-50/70 ring-1 ring-blue-500 shadow-2xs'
-                            : 'border-gray-200 bg-white hover:bg-gray-50'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-gray-900 text-xs">Demo / Simulation</span>
-                          {dispatchMethod === 'demo' && <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />}
-                        </div>
-                        <p className="text-[10px] text-gray-500 mt-0.5">Instant delivery & audit logs</p>
                       </button>
                     </div>
                   </div>

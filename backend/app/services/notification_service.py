@@ -2,6 +2,7 @@
 UniSIRAJ CIA Helpdesk Agent - Notification Dispatch & Lifecycle Orchestration
 """
 
+import uuid
 from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any, Tuple
 from sqlalchemy.orm import Session
@@ -40,14 +41,41 @@ class NotificationService:
         ).first()
 
         if existing:
-            if existing.status in [NotificationStatus.DELIVERED, NotificationStatus.SENT]:
+            if dispatch_method == "demo":
+                # In Demo / Simulation mode, simulate delivery cleanly and update delivery state
+                demo_sid = f"SM_DEMO_{uuid.uuid4().hex[:24]}"
+                existing.attempt_count += 1
+                existing.provider_message_id = demo_sid
+                existing.status = NotificationStatus.DELIVERED
+                existing.sent_at = datetime.now(timezone.utc)
+                existing.last_error = None
+                db.commit()
+                db.refresh(existing)
+
+                AuditService.log_event(
+                    db=db,
+                    action="SEND_WHATSAPP_REMINDER_DEMO",
+                    resource_type="NOTIFICATION",
+                    resource_id=str(existing.id),
+                    user_id=actor_id,
+                    details={
+                        "matric_id": student.matric_id,
+                        "milestone_days": milestone_days,
+                        "status": existing.status,
+                        "provider_sid": demo_sid,
+                        "dispatch_method": "demo",
+                    }
+                )
+                return True, existing, f"Notification simulated and delivered successfully in Demo Mode to {student.student_name}."
+            elif existing.status in [NotificationStatus.DELIVERED, NotificationStatus.SENT]:
                 return False, existing, (
                     f"Reminder for milestone {milestone_days} days was already dispatched "
                     f"to {student.student_name} on {existing.created_at.strftime('%Y-%m-%d')}."
                 )
-            # If previously failed, we will retry this record
-            notif_record = existing
-            notif_record.attempt_count += 1
+            else:
+                # If previously failed, we will retry this record
+                notif_record = existing
+                notif_record.attempt_count += 1
         else:
             # Build new template message
             expiry_str = student.visa_expiry_date.strftime("%d %b %Y") if student.visa_expiry_date else "N/A"
@@ -127,7 +155,12 @@ class NotificationService:
         )
 
         success = notif_record.status != NotificationStatus.FAILED
-        msg = f"Reminder dispatched with status '{notif_record.status}'." if success else f"Failed: {notif_record.last_error}"
+        if success and dispatch_method in ["demo", "mock"]:
+            msg = f"Notification simulated and delivered successfully in Demo Mode to {student.student_name}."
+        elif success:
+            msg = f"Reminder dispatched with status '{notif_record.status}'."
+        else:
+            msg = f"Failed: {notif_record.last_error}"
         return success, notif_record, msg
 
     @staticmethod

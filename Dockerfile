@@ -5,17 +5,16 @@
 # ==============================================================================
 
 # STAGE 1: Frontend Build
-FROM node:20-slim AS frontend-builder
+FROM node:22-slim AS frontend-builder
 WORKDIR /app
 
-ENV NODE_ENV=production
-
-# Install dependencies using package-lock.json for clean reproducible builds
+# Install dependencies using package-lock.json with legacy peer deps protection
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --legacy-peer-deps || npm install --legacy-peer-deps
 
 # Copy frontend source
 COPY tsconfig.json vite.config.ts index.html ./
+COPY firebase-applet-config.json* metadata.json* ./
 COPY public ./public
 COPY src ./src
 

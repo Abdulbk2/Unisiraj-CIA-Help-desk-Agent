@@ -110,6 +110,7 @@ def get_eligible_students(
                         "fullName": s.student_name,
                         "phoneNumber": phone,
                         "visaExpiryDate": s.visa_expiry_date.isoformat() if s.visa_expiry_date else "",
+                        "formattedExpiryDate": s.visa_expiry_date.strftime("%d %b %Y") if s.visa_expiry_date else "N/A",
                         "nationality": s.nationality or "International",
                         "daysRemaining": days,
                         "status": determine_student_status(days),
@@ -227,7 +228,7 @@ def send_whatsapp(
     milestone_days = tier_map.get(payload.tier, 30)
 
     actor_id = current_user.id if current_user else None
-    dispatch_mode = payload.dispatchMethod or None
+    dispatch_mode = payload.dispatchMethod
 
     success, notif, msg = NotificationService.send_student_reminder(
         db=db,
@@ -255,7 +256,7 @@ def send_whatsapp(
         sentAt=notif.sent_at.isoformat() if notif.sent_at else None,
         message=msg,
         tier=payload.tier,
-        dispatchMethod=dispatch_mode or "twilio",
+        dispatchMethod=dispatch_mode or "demo",
     )
 
 

@@ -60,39 +60,54 @@ You have three streamlined methods to deploy to Google Cloud Run. **Method A** i
 
 ---
 
-### 🚀 Method A: 1-Command Deploy via Google Cloud SDK / Cloud Shell (Recommended)
+### 🚀 Method A: 1-Click Deploy via Google Cloud CLI / Cloud Shell (Recommended)
 
-Google Cloud can build the container image directly in the cloud using Google Cloud Build (no local Docker required):
+Google Cloud builds the container image directly in the cloud using Google Cloud Build (no local Docker required).
 
-1. **Open Google Cloud Shell** in the [Google Cloud Console](https://console.cloud.google.com/) (or install the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)).
-2. Set your active Google Cloud project:
-   ```bash
-   gcloud config set project YOUR_GCP_PROJECT_ID
-   ```
-3. Enable necessary Google Cloud APIs:
-   ```bash
-   gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
-   ```
-4. Deploy the source directory directly:
-   ```bash
-   gcloud run deploy unisiraj-cia-helpdesk \
-     --source . \
-     --region asia-southeast1 \
-     --platform managed \
-     --allow-unauthenticated \
-     --port 8080 \
-     --memory 1Gi \
-     --cpu 1 \
-     --set-env-vars "\
-   ENVIRONMENT=production,\
-   DEBUG=false,\
-   DEFAULT_TIMEZONE=Asia/Kuala_Lumpur,\
-   TWILIO_PROVIDER=twilio,\
-   SMTP_HOST=smtp.gmail.com,\
-   SMTP_PORT=587,\
-   SMTP_USER=muhammadmataxu@gmail.com,\
-   SMTP_FROM_NAME=UniSIRAJ CIA Helpdesk,\
-   SMTP_FROM_EMAIL=muhammadmataxu@gmail.com,\
+#### For Windows PowerShell Users:
+You can simply run the included deployment script:
+```powershell
+.\deploy-cloudrun.ps1
+```
+
+Or run the single-line PowerShell command directly:
+```powershell
+gcloud config set project unisiraj-cia-helpdesk-agent; gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com; gcloud run deploy unisiraj-cia-helpdesk --source . --region asia-southeast1 --platform managed --allow-unauthenticated --port 8080 --memory 1Gi --cpu 1 --set-env-vars "ENVIRONMENT=production,DEBUG=false,DEFAULT_TIMEZONE=Asia/Kuala_Lumpur,TWILIO_PROVIDER=mock,SMTP_HOST=smtp.gmail.com,SMTP_PORT=587,SMTP_USER=muhammadmataxu@gmail.com,SMTP_FROM_NAME=UniSIRAJ CIA Helpdesk,SMTP_FROM_EMAIL=muhammadmataxu@gmail.com,SMTP_REPLY_TO=cia.helpdesk@unisiraj.edu.my,SMTP_USE_TLS=true,SMTP_USE_SSL=false"
+```
+
+> **Note on PowerShell vs Bash**: In Windows PowerShell, line continuation uses the backtick (`` ` ``) character, not the backslash (`\`).
+
+#### For Linux / macOS / Google Cloud Shell Users (Bash):
+```bash
+# 1. Set your GCP project
+gcloud config set project unisiraj-cia-helpdesk-agent
+
+# 2. Enable APIs
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
+
+# 3. Deploy
+gcloud run deploy unisiraj-cia-helpdesk \
+  --source . \
+  --region asia-southeast1 \
+  --platform managed \
+  --allow-unauthenticated \
+  --port 8080 \
+  --memory 1Gi \
+  --cpu 1 \
+  --set-env-vars "\
+ENVIRONMENT=production,\
+DEBUG=false,\
+DEFAULT_TIMEZONE=Asia/Kuala_Lumpur,\
+TWILIO_PROVIDER=mock,\
+SMTP_HOST=smtp.gmail.com,\
+SMTP_PORT=587,\
+SMTP_USER=muhammadmataxu@gmail.com,\
+SMTP_FROM_NAME=UniSIRAJ CIA Helpdesk,\
+SMTP_FROM_EMAIL=muhammadmataxu@gmail.com,\
+SMTP_REPLY_TO=cia.helpdesk@unisiraj.edu.my,\
+SMTP_USE_TLS=true,\
+SMTP_USE_SSL=false"
+```
    SMTP_REPLY_TO=cia.helpdesk@unisiraj.edu.my,\
    SMTP_USE_TLS=true,\
    SMTP_USE_SSL=false"

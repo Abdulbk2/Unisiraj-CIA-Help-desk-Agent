@@ -68,7 +68,7 @@ class SendWhatsAppPayload(BaseModel):
     customNote: Optional[str] = None
     customMessage: Optional[str] = None
     destinationPhone: Optional[str] = None
-    dispatchMethod: Optional[str] = None  # "twilio" | "demo"
+    dispatchMethod: Optional[str] = None  # "demo" | "twilio"
 
 
 class SendWhatsAppResponse(BaseModel):
